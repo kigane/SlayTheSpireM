@@ -1,0 +1,30 @@
+using UnityEngine;
+using UnityEngine.UIElements;
+
+namespace #Project#
+{
+    public class #NAME# : VisualElement
+    {
+        // 模板外套的根元素
+        private readonly TemplateContainer mTemplateContainer;
+
+        // 让自定义控件可以显示到UI Builder中
+        public new class UxmlFactory : UxmlFactory<#NAME#> { }
+
+        // 提供无参构造函数
+        public #NAME#() 
+        { 
+            mTemplateContainer = Resources.Load<VisualTreeAsset>("UI/Template/xxx").Instantiate();
+            mTemplateContainer.style.flexGrow = 1;
+
+            hierarchy.Add(mTemplateContainer);
+        }
+        
+        // 有参构造函数
+        public #NAME#(string path) : this()
+        { 
+            //TODO
+        }
+
+    }
+}

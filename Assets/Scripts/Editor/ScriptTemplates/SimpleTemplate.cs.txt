@@ -1,0 +1,9 @@
+using QFramework;
+
+namespace #Project#
+{
+    public class #NAME#
+    {
+        
+    }
+}

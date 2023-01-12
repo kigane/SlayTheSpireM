@@ -1,0 +1,12 @@
+using QFramework;
+
+namespace #Project#
+{
+    public class #NAME# : AbstractCommand
+    {
+        protected override void OnExecute()
+        {
+            //TODO
+        }
+    }
+}
