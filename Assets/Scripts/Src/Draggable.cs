@@ -8,7 +8,6 @@ namespace SlayTheSpireM
     public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         public Transform parentToReturn;
-        public Transform placeholderParent;
         private GameObject placeholder;
         private CanvasGroup canvasGroup;
         private float offsetX;
@@ -17,7 +16,6 @@ namespace SlayTheSpireM
         private void Awake()
         {
             canvasGroup = GetComponent<CanvasGroup>();
-            placeholderParent = transform.parent;
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -49,21 +47,6 @@ namespace SlayTheSpireM
             targetPos.x += offsetX;
             targetPos.y += offsetY;
             transform.position = targetPos;
-
-            if (placeholder.transform.parent != placeholderParent)
-                placeholder.transform.SetParent(placeholderParent);
-
-            // 卡牌排序
-            var neighborIdx = placeholder.transform.GetSiblingIndex();
-            for (int i = 0; i < placeholderParent.childCount; i++)
-            {
-                if (placeholderParent.GetChild(i).position.x > eventData.position.x)
-                {
-                    neighborIdx = i;
-                    break;
-                }
-            }
-            placeholder.transform.SetSiblingIndex(neighborIdx);
         }
 
         public void OnEndDrag(PointerEventData eventData)

@@ -57,7 +57,7 @@ namespace QFramework
 
     // where指定泛型限定条件，必须是Architecture的子类，且有无参的构造函数
     // Architecture用于管理类
-    public abstract class Architecture<T> : IArchitecture where T : Architecture<T>, new() 
+    public abstract class Architecture<T> : IArchitecture where T : Architecture<T>, new()
     {
         private bool mInited = false;
 
@@ -603,7 +603,7 @@ namespace QFramework
             }
 
             trigger.AddUnRegister(unRegister);
-            
+
             return unRegister;
         }
     }
@@ -676,7 +676,7 @@ namespace QFramework
             if (mInstances.TryGetValue(key, out var retInstance))
             {
                 // as表示类型转换，相当于 expression is type ? (type)expression : (type)null
-                return retInstance as T; 
+                return retInstance as T;
             }
 
             return null;
@@ -696,7 +696,7 @@ namespace QFramework
     public interface IReadonlyBindableProperty<T>
     {
         T Value { get; }
-        
+
         IUnRegister RegisterWithInitValue(Action<T> action);
         void UnRegister(Action<T> onValueChanged);
         IUnRegister Register(Action<T> onValueChanged);
@@ -740,7 +740,7 @@ namespace QFramework
         }
 
         private Action<T> mOnValueChanged = (v) => { };
- 
+
         public IUnRegister Register(Action<T> onValueChanged)
         {
             mOnValueChanged += onValueChanged;
@@ -751,6 +751,13 @@ namespace QFramework
             };
         }
 
+        /// <summary>
+        /// 创建对象时会赋一个初始值，这个值不会触发注册事件，
+        /// 因为此时事件还未注册。这个方法就弥补了这一点，
+        /// 为初始值也触发一次事件。
+        /// </summary>
+        /// <param name="onValueChanged"></param>
+        /// <returns></returns>
         public IUnRegister RegisterWithInitValue(Action<T> onValueChanged)
         {
             onValueChanged(mValue);
@@ -795,7 +802,7 @@ namespace QFramework
     public interface IEasyEvent
     {
     }
-    
+
     public class EasyEvent : IEasyEvent
     {
         private Action mOnEvent = () => { };
@@ -888,7 +895,7 @@ namespace QFramework
         {
             return mGlobalEvents.GetEvent<T>();
         }
-        
+
 
         public static void Register<T>() where T : IEasyEvent, new()
         {
@@ -896,7 +903,7 @@ namespace QFramework
         }
 
         private Dictionary<Type, IEasyEvent> mTypeEvents = new Dictionary<Type, IEasyEvent>();
-        
+
         public void AddEvent<T>() where T : IEasyEvent, new()
         {
             mTypeEvents.Add(typeof(T), new T());
