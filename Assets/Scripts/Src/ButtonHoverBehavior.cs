@@ -12,31 +12,34 @@ namespace SlayTheSpireM
 
         private Image image;
         private float startX;
+        private RectTransform rt;
 
         private void Awake()
         {
             image = GetComponent<Image>();
-            startX = transform.position.x;
+            rt = (RectTransform)transform;
+            startX = rt.anchoredPosition.x;
         }
 
         private void OnEnable()
         {
             image.color = new Color32(0, 0, 0, 0);
-            var pos = transform.position;
+            var pos = rt.anchoredPosition;
             pos.x = startX;
-            transform.position = pos;
+            rt.anchoredPosition = pos;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             image.color = new Color32(227, 220, 138, 178);
-            transform.DOMoveX(startX + offsetX, moveDuration);
+            // 如果使用transform.DOMoveX()会有bug，使按钮位置不正确。
+            rt.DOAnchorPosX(startX + offsetX, moveDuration);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             image.color = new Color32(0, 0, 0, 0);
-            transform.DOMoveX(startX, moveDuration);
+            rt.DOAnchorPosX(startX, moveDuration);
         }
     }
 }

@@ -12,17 +12,25 @@ namespace SlayTheSpireM
         private CanvasGroup canvasGroup;
         private float offsetX;
         private float offsetY;
+        private RectTransform rectTransform;
 
         private void Awake()
         {
             canvasGroup = GetComponent<CanvasGroup>();
+            rectTransform = GetComponent<RectTransform>();
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
             // Log.Debug("On drag begin!");
-            offsetX = transform.position.x - eventData.position.x;
-            offsetY = transform.position.y - eventData.position.y;
+            // 将屏幕上的点转换为指定RectTransform中的点的世界坐标
+            RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, eventData.position, eventData.pressEventCamera, out var mousePos);
+            // rectTransform.position是世界坐标
+            offsetX = rectTransform.position.x - mousePos.x;
+            offsetY = rectTransform.position.y - mousePos.y;
+            // Log.Debug("offset", new Vector2(offsetX, offsetY));
+            // Log.Debug("rect position", rectTransform.position);
+            // Log.Debug("event position", mousePos);
 
             // 在原地创造一个卡牌占位符
             var cardGO = Resources.Load<GameObject>("Prefabs/Card");
@@ -35,7 +43,7 @@ namespace SlayTheSpireM
 
             // 将卡牌拖到特定区域
             parentToReturn = transform.parent;
-            transform.SetParent(transform.root); // root指向当前GO所在层级的最高层级的GO，这里是Canvas。
+            transform.SetParent(transform.parent.parent.parent);
 
             canvasGroup.blocksRaycasts = false;
         }
@@ -43,30 +51,45 @@ namespace SlayTheSpireM
         public void OnDrag(PointerEventData eventData)
         {
             // Log.Debug("On drag!");
-            var targetPos = eventData.position;
+            RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, eventData.position, eventData.pressEventCamera, out var mousePos);
+            var targetPos = mousePos;
             targetPos.x += offsetX;
             targetPos.y += offsetY;
-            transform.position = targetPos;
+            rectTransform.position = targetPos;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            // Log.Debug("On drag end!");
-            transform.SetParent(parentToReturn);
+            List<RaycastResult> raycastResults = new();
+            EventSystem.current.RaycastAll(eventData, raycastResults);
+            foreach (var item in raycastResults)
+            {
+                Log.Debug(item.gameObject.name);
+                // Log.Debug(item.screenPosition);
+                // Log.Debug(item.sortingLayer);
+                if (item.gameObject.name == "Battle Field") // 打出
+                {
+                    Log.Debug("Battle Field", item.screenPosition);
+                    parentToReturn = null;
+                    Destroy(gameObject);
+                }
+                // if (item.gameObject.name == "Player Image")
+                // {
+                //     Log.Debug("Player Image", item.screenPosition);
+                // }
+                // if (item.gameObject.name == "Enemy Image")
+                // {
+                //     Log.Debug("Enemy Image", item.screenPosition);
+                // }
+            }
 
-            canvasGroup.blocksRaycasts = true;
-
-            transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
+            if (parentToReturn) // 没打出去
+            {
+                transform.SetParent(parentToReturn);
+                canvasGroup.blocksRaycasts = true;
+                transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
+            }
             Destroy(placeholder);
-
-            // List<RaycastResult> raycastResults = new List<RaycastResult>();
-            // EventSystem.current.RaycastAll(eventData, raycastResults);
-            // foreach (var item in raycastResults)
-            // {
-            //     Log.Debug(item.gameObject.name);
-            //     Log.Debug(item.screenPosition);
-            //     Log.Debug(item.sortingLayer);
-            // }
         }
     }
 }

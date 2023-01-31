@@ -1,0 +1,15 @@
+using UnityEngine;
+using UnityEngine.UI;
+using deVoid.UIFramework;
+using DG.Tweening;
+
+namespace #Project#
+{
+    public class #NAME# : APanelController
+    {
+        protected override void AddListeners()
+        {
+            //TODO
+        }
+    }
+}
