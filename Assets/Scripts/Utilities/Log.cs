@@ -53,13 +53,13 @@ public class Log
             }
             else if (type == typeof(Dictionary<,>))
             {
-                message = "{";
+                message = "{\n";
                 foreach (DictionaryEntry entry in (IDictionary)obj)
                 {
-                    message += entry.Key + ": " + entry.Value + ", ";
+                    message += entry.Key + ": " + entry.Value + ",\n";
                 }
                 message = message.Remove(message.Length - 2);
-                message += "}";
+                message += "\n}";
             }
         }
 
@@ -91,6 +91,12 @@ public class Log
     public static void Info(object message, int size = -1)
     {
         LogWithColorAndSize(message, "green", size);
+    }
+
+    [Conditional("Debug"), Conditional("Info")]
+    public static void Info(string header, object message, int size = -1)
+    {
+        LogWithColorAndSize(header + ": " + message, "green", size);
     }
 
     // [Conditional("Debug"), Conditional("Info")]

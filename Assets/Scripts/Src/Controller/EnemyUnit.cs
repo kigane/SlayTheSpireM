@@ -12,7 +12,7 @@ namespace SlayTheSpireM
         {
             if (Input.GetKeyDown(KeyCode.U))
             {
-                AddBuff(new Buff("attack", BuffType.NUMBER, 0, 2));
+                AddBuff(new BuffIcon("attack", BuffType.NUMBER, 0, 2));
             }
 
             if (Input.GetKeyDown(KeyCode.I))

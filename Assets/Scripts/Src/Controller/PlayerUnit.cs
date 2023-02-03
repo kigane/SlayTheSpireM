@@ -31,12 +31,12 @@ namespace SlayTheSpireM
 
             if (Input.GetKeyDown(KeyCode.K))
             {
-                AddBuff(new Buff("attack", BuffType.NUMBER, 0, 1));
+                AddBuff(new BuffIcon("attack", BuffType.NUMBER, 0, 1));
             }
 
             if (Input.GetKeyDown(KeyCode.L))
             {
-                AddBuff(new Buff("buff", BuffType.EFFECT, 1, 0));
+                AddBuff(new BuffIcon("buff", BuffType.EFFECT, 1, 0));
             }
 
             if (Input.GetKeyDown(KeyCode.Space))

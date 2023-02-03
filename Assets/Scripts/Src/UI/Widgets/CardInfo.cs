@@ -12,15 +12,16 @@ namespace SlayTheSpireM
         public Image cardFace;
         public TextMeshProUGUI cardType;
         public TextMeshProUGUI cardDesc;
+        public Card mCard;
 
-        public void SetCardInfo(Card card, int i)
+        public void SetData(Card card, int i)
         {
             index.text = "" + i;
             energy.text = "" + card.energy;
             cardName.text = card.name;
             cardFace.sprite = Resources.Load<Sprite>("Icon/Buff/attack");
             cardType.text = "" + card.type;
-            cardDesc.text = card.effect;
+            cardDesc.text = card.description;
         }
     }
 }

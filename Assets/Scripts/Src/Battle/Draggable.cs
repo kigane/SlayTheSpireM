@@ -13,6 +13,8 @@ namespace SlayTheSpireM
         private float offsetX;
         private float offsetY;
         private RectTransform rectTransform;
+        private Vector2 startPoint;
+        public GameObject lineUi;
 
         private void Awake()
         {
@@ -22,15 +24,13 @@ namespace SlayTheSpireM
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            // Log.Debug("On drag begin!");
+            startPoint = eventData.position;
+
             // 将屏幕上的点转换为指定RectTransform中的点的世界坐标
             RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, eventData.position, eventData.pressEventCamera, out var mousePos);
             // rectTransform.position是世界坐标
             offsetX = rectTransform.position.x - mousePos.x;
             offsetY = rectTransform.position.y - mousePos.y;
-            // Log.Debug("offset", new Vector2(offsetX, offsetY));
-            // Log.Debug("rect position", rectTransform.position);
-            // Log.Debug("event position", mousePos);
 
             // 在原地创造一个卡牌占位符
             var cardGO = Resources.Load<GameObject>("Prefabs/Card");
@@ -50,26 +50,32 @@ namespace SlayTheSpireM
 
         public void OnDrag(PointerEventData eventData)
         {
-            // Log.Debug("On drag!");
             RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, eventData.position, eventData.pressEventCamera, out var mousePos);
             var targetPos = mousePos;
             targetPos.x += offsetX;
             targetPos.y += offsetY;
             rectTransform.position = targetPos;
+
+            var line = lineUi.GetComponent<Line>();
+            lineUi.SetActive(true);
+            line.SetStartPoint(startPoint, eventData.pressEventCamera);
+            line.SetEndPoint(eventData.position, eventData.pressEventCamera);
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            lineUi.SetActive(false);
+            // return;
             List<RaycastResult> raycastResults = new();
             EventSystem.current.RaycastAll(eventData, raycastResults);
             foreach (var item in raycastResults)
             {
-                Log.Debug(item.gameObject.name);
+                // Log.Debug(item.gameObject.name);
                 // Log.Debug(item.screenPosition);
                 // Log.Debug(item.sortingLayer);
                 if (item.gameObject.name == "Battle Field") // 打出
                 {
-                    Log.Debug("Battle Field", item.screenPosition);
+                    // Log.Debug("Battle Field", item.screenPosition);
                     parentToReturn = null;
                     Destroy(gameObject);
                 }

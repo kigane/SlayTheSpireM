@@ -34,7 +34,7 @@ namespace SlayTheSpireM
     }
 
 
-    public class Test : BaseController
+    public class Test : BaseMonoController
     {
         IPlayerModel playerModel;
         public Transform windowLayer;

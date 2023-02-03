@@ -4,13 +4,15 @@ namespace SlayTheSpireM
 {
     public class OpenNewScreenEvent
     {
+        public static OpenNewScreenEvent instance = new();
+
         public string screenId;
+        public string ScreenId => screenId;
 
-        public OpenNewScreenEvent() { }
-
-        public OpenNewScreenEvent(string id)
+        public static OpenNewScreenEvent SetAmount(string id)
         {
-            screenId = id;
+            instance.screenId = id;
+            return instance;
         }
     }
 }

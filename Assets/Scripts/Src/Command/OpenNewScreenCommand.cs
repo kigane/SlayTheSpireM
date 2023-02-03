@@ -13,7 +13,7 @@ namespace SlayTheSpireM
 
         protected override void OnExecute()
         {
-            this.SendEvent(new OpenNewScreenEvent(screenId));
+            this.SendEvent(OpenNewScreenEvent.SetAmount(screenId));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace SlayTheSpireM
         protected override void Init()
         {
             // 工具层
-            // RegisterUtility<IJsonSerializer>(new NewtonsoftJsonSerializer());
+            RegisterUtility<IJsonSerializer>(new NewtonsoftJsonSerializer());
 
             // 系统层
             // RegisterSystem<IPlayerSystem>(new PlayerSystem());
@@ -16,6 +16,7 @@ namespace SlayTheSpireM
             // 模型层
             RegisterModel<IPlayerModel>(new PlayerModel());
             RegisterModel(new CardDataBase());
+            RegisterModel(new CardConfigModel("Configs/cards"));
         }
     }
 }

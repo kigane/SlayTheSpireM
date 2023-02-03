@@ -24,7 +24,7 @@ namespace SlayTheSpireM
         public BindableProperty<int> maxEnergy = new(3);
         public BindableProperty<int> drawCardsPerTurn = new(5);
 
-        public void SetDeck(List<Card> playerDeck)
+        public void ResetDeck(List<Card> playerDeck)
         {
             drawPile = new();
             discardPile = new();
@@ -41,15 +41,10 @@ namespace SlayTheSpireM
             //TODO 超过手牌上限时，直接将牌放入弃牌堆
             for (int i = 0; i < n; i++)
             {
-                DrawACard();
+                handCards.Add(drawPile[0]);
+                drawPile.RemoveAt(0);
             }
             this.SendCommand<UpdateHandCardsViewCommand>();
-        }
-
-        public void DrawACard()
-        {
-            handCards.Add(drawPile[0]);
-            drawPile.RemoveAt(0);
         }
 
         public void UseEnergy(int n)

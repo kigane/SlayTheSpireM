@@ -35,7 +35,7 @@ namespace SlayTheSpireM
             playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
             playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
             playerModel.Deck.Add(new Card(cardDataBase.cards[2]));
-            PlayerData.Instance.SetDeck(playerModel.Deck);
+            PlayerData.Instance.ResetDeck(playerModel.Deck);
         }
     }
 }

@@ -4,7 +4,7 @@ using QFramework;
 
 namespace SlayTheSpireM
 {
-    public class UIController : BaseController
+    public class UIController : BaseMonoController
     {
         [SerializeField] private UISettings defaultUISettings = null;
 
@@ -20,7 +20,7 @@ namespace SlayTheSpireM
 
             this.RegisterEvent<OpenNewScreenEvent>(e =>
             {
-                uiFrame.ShowScreen(e.screenId);
+                uiFrame.ShowScreen(e.ScreenId);
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
 

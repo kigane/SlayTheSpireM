@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using QFramework;
+﻿using QFramework;
 
 namespace SlayTheSpireM
 {
-    public abstract class BaseController : MonoBehaviour, IController
+    public abstract class BaseController : IController
     {
         IArchitecture IBelongToArchitecture.GetArchitecture()
         {

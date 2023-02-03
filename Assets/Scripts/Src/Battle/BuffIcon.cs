@@ -12,7 +12,7 @@ namespace SlayTheSpireM
         SPECIAL
     }
 
-    public class Buff
+    public class BuffIcon
     {
         public Sprite Icon { get; }
         public BuffType Type { get; }
@@ -44,7 +44,7 @@ namespace SlayTheSpireM
 
         public TextMeshProUGUI Text;
 
-        public Buff(string name, BuffType type, int lastTurns, int number)
+        public BuffIcon(string name, BuffType type, int lastTurns, int number)
         {
             Name = name;
             Icon = Resources.Load<Sprite>($"Icon/Buff/{name}");
@@ -53,7 +53,7 @@ namespace SlayTheSpireM
             Number = number;
         }
 
-        public static Buff operator +(Buff a, Buff b)
+        public static BuffIcon operator +(BuffIcon a, BuffIcon b)
         {
             if (a.Name != b.Name)
                 throw new NotSupportedException($"不同类的Buff不能相加: {a.Name}, {b.Name}");

@@ -19,8 +19,10 @@ namespace SlayTheSpireM
             {
                 Log.Debug("Start Game");
                 startBtn.gameObject.SetActive(false);
+                exitBtn.gameObject.SetActive(false);
                 // this.SendCommand(new OpenNewScreenCommand(ScreenIds.ModeSelectWindow));
                 SceneManager.LoadScene("MainScene");
+                BattleSession.instance.CacheStartingDeck();
             });
             exitBtn.onClick.AddListener(OnExit);
         }
@@ -43,7 +45,7 @@ namespace SlayTheSpireM
             playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
             playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
             playerModel.Deck.Add(new Card(cardDataBase.cards[2]));
-            PlayerData.Instance.SetDeck(playerModel.Deck);
+            PlayerData.Instance.ResetDeck(playerModel.Deck);
         }
 
         private void OnExit()
