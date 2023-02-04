@@ -14,8 +14,9 @@ namespace SlayTheSpireM
         {
             startBattleBtn.onClick.AddListener(() =>
             {
+                // 进入第一场战斗
                 this.SendCommand(new OpenNewScreenCommand(GameScreenIds.BattleWindow));
-                BattleStateManager.instance.ChangeState(BattleStateType.INIT);
+                BattleSession.instance.ChangeState(BattleStateType.Init);
             });
         }
     }

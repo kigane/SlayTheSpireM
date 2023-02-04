@@ -2,11 +2,11 @@
 {
     public enum BattleStateType
     {
-        NONE,
-        INIT,
-        PLAYER,
-        ENEMY,
-        WIN,
-        LOSE
+        None,
+        Init,
+        PlayerTurn,
+        EnemyTurn,
+        Win,
+        Lose
     }
 }

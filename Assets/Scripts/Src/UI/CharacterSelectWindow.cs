@@ -12,30 +12,30 @@ namespace SlayTheSpireM
 
         protected override void AddListeners()
         {
-            PrepareInitialDeck();
+            // PrepareInitialDeck();
             returnBtn.onClick.AddListener(() => this.SendCommand<CloseCurrentScreenCommand>());
             embarkBtn.onClick.AddListener(() => SceneManager.LoadScene("MainScene"));
         }
 
         // 准备初始卡组
-        private void PrepareInitialDeck()
-        {
-            IPlayerModel playerModel = this.GetModel<IPlayerModel>();
-            CardDataBase cardDataBase = this.GetModel<CardDataBase>();
-            playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[2]));
-            PlayerData.Instance.ResetDeck(playerModel.Deck);
-        }
+        // private void PrepareInitialDeck()
+        // {
+        //     IPlayerModel playerModel = this.GetModel<IPlayerModel>();
+        //     CardDataBase cardDataBase = this.GetModel<CardDataBase>();
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
+        //     playerModel.Deck.Add(new Card(cardDataBase.cards[2]));
+        //     PlayerData.Instance.ResetDeck(playerModel.Deck);
+        // }
     }
 }

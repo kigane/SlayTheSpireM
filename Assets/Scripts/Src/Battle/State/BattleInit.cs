@@ -9,9 +9,9 @@ namespace SlayTheSpireM
             Log.Info("战斗开始!");
             //TODO 播放BGM
             //TODO UI动画
-            // 洗牌
-            PlayerData.Instance.Shuffle();
-            BattleStateManager.instance.ChangeState(BattleStateType.PLAYER);
+            // 战斗准备
+            BattleSession.instance.SessionStart();
+            BattleSession.instance.ChangeState(BattleStateType.PlayerTurn);
         }
     }
 }

@@ -23,19 +23,21 @@ namespace SlayTheSpireM
             SetText(drawPileCountText, playerModel.Deck.Count);
             SetText(discardPileCountText, "0");
             SetText(exhaustedPileCountText, "0");
-            SetText(energyText, $"{PlayerData.Instance.currEnergy}/{PlayerData.Instance.maxEnergy}");
+            SetText(energyText, $"{BattleSession.instance.player.currEnergy}/{BattleSession.instance.player.maxEnergy}");
 
             this.RegisterEvent<HandCardsUpdateEvent>(e =>
             {
                 // Log.Info(e.GetType().Name);
-                var hc = PlayerData.Instance.handCards;
+                var hc = BattleSession.instance.player.handCards;
+                Log.Debug(hc);
+                var deck = BattleSession.instance.deck;
 
                 // 显示手牌
                 int i = 0;
                 for (; i < hc.Count; i++)
                 {
                     var cardGO = handCards.GetChild(i).gameObject;
-                    cardGO.GetComponent<CardInfo>().SetData(hc[i], i);
+                    cardGO.GetComponent<CardInfo>().SetData(deck.GetCardById(hc[i]), i);
                     cardGO.SetActive(true);
                 }
 
@@ -45,18 +47,18 @@ namespace SlayTheSpireM
                     i++;
                 }
 
-                SetText(drawPileCountText, PlayerData.Instance.drawPile.Count);
-                SetText(discardPileCountText, PlayerData.Instance.discardPile.Count);
+                SetText(drawPileCountText, BattleSession.instance.player.drawPile.Count);
+                SetText(discardPileCountText, BattleSession.instance.player.discardPile.Count);
             });
 
-            PlayerData.Instance.maxEnergy.Register(val =>
+            BattleSession.instance.player.maxEnergy.Register(val =>
             {
-                SetText(energyText, $"{PlayerData.Instance.currEnergy}/{val}");
+                SetText(energyText, $"{BattleSession.instance.player.currEnergy}/{val}");
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
 
-            PlayerData.Instance.currEnergy.Register(val =>
+            BattleSession.instance.player.currEnergy.Register(val =>
             {
-                SetText(energyText, $"{val}/{PlayerData.Instance.maxEnergy}");
+                SetText(energyText, $"{val}/{BattleSession.instance.player.maxEnergy}");
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
 

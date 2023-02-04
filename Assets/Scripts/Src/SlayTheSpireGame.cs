@@ -15,7 +15,6 @@ namespace SlayTheSpireM
 
             // 模型层
             RegisterModel<IPlayerModel>(new PlayerModel());
-            RegisterModel(new CardDataBase());
             RegisterModel(new CardConfigModel("Configs/cards"));
         }
     }

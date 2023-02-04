@@ -11,7 +11,7 @@ namespace SlayTheSpireM
 
         public Deck(RoleType role)
         {
-            if (role == RoleType.IRONCLAD)
+            if (role == RoleType.Ironclad)
             {
                 deck.Add(0);
                 deck.Add(0);
@@ -32,7 +32,7 @@ namespace SlayTheSpireM
 
             var cardConfigModel = this.GetModel<CardConfigModel>();
             var roleCardConfigs = cardConfigModel.GetCardsByRole(role);
-            var allRoleCardConfigs = cardConfigModel.GetCardsByRole(RoleType.ALL);
+            var allRoleCardConfigs = cardConfigModel.GetCardsByRole(RoleType.all);
             foreach (var cardConfig in roleCardConfigs)
             {
                 DeckCardsCache[cardConfig.Id] = CardFactory.CreateCard(cardConfig);

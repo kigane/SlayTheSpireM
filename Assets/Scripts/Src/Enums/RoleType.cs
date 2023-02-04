@@ -9,10 +9,10 @@
     /// </summary>
     public enum RoleType
     {
-        IRONCLAD,
-        SILENT,
-        DEFECT,
-        WATCHER,
-        ALL
+        Ironclad,
+        Silent,
+        Defect,
+        Watcher,
+        all
     }
 }

@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
 namespace SlayTheSpireM
 {
@@ -22,40 +23,16 @@ namespace SlayTheSpireM
             rectTransform = GetComponent<RectTransform>();
         }
 
+        // 点击时确定pointerDrag，只要不放开pointerDrag就不会变。
         public void OnBeginDrag(PointerEventData eventData)
         {
             startPoint = eventData.position;
-
-            // 将屏幕上的点转换为指定RectTransform中的点的世界坐标
-            RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, eventData.position, eventData.pressEventCamera, out var mousePos);
-            // rectTransform.position是世界坐标
-            offsetX = rectTransform.position.x - mousePos.x;
-            offsetY = rectTransform.position.y - mousePos.y;
-
-            // 在原地创造一个卡牌占位符
-            var cardGO = Resources.Load<GameObject>("Prefabs/Card");
-            placeholder = Instantiate(cardGO, transform.parent);
-            placeholder.GetComponent<CanvasGroup>().alpha = 0;
-
-            // 将占位符保持在卡牌原位
-            // Log.Debug(transform.GetSiblingIndex());
-            placeholder.transform.SetSiblingIndex(transform.GetSiblingIndex());
-
-            // 将卡牌拖到特定区域
-            parentToReturn = transform.parent;
-            transform.SetParent(transform.parent.parent.parent);
-
-            canvasGroup.blocksRaycasts = false;
+            eventData.pointerDrag.transform.DOScale(new Vector3(1.5f, 1.5f, 1f), 0.5f);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, eventData.position, eventData.pressEventCamera, out var mousePos);
-            var targetPos = mousePos;
-            targetPos.x += offsetX;
-            targetPos.y += offsetY;
-            rectTransform.position = targetPos;
-
+            // 指示箭头
             var line = lineUi.GetComponent<Line>();
             lineUi.SetActive(true);
             line.SetStartPoint(startPoint, eventData.pressEventCamera);
@@ -64,38 +41,51 @@ namespace SlayTheSpireM
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            // 表现
             lineUi.SetActive(false);
-            // return;
+            eventData.pointerDrag.transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f);
+
+            // 获取打出的卡牌在手牌中的序号
+            var cardIdxInHand = transform.GetSiblingIndex();
+            var card = BattleSession.instance.deck.GetCardById(BattleSession.instance.player.handCards[cardIdxInHand]);
+            Log.Debug("===================");
+            Log.Debug("打出牌在手牌中的序号", cardIdxInHand.ToString());
+            Log.Debug("Card Target Type", card.effect.TargetType);
+            Log.Debug("===================");
+
+            // 确定卡牌作用对象
             List<RaycastResult> raycastResults = new();
             EventSystem.current.RaycastAll(eventData, raycastResults);
             foreach (var item in raycastResults)
             {
-                // Log.Debug(item.gameObject.name);
-                // Log.Debug(item.screenPosition);
-                // Log.Debug(item.sortingLayer);
-                if (item.gameObject.name == "Battle Field") // 打出
+                if (card.effect.TargetType == TargetType.Enemy) // 作用于一个敌人的卡
                 {
-                    // Log.Debug("Battle Field", item.screenPosition);
-                    parentToReturn = null;
-                    Destroy(gameObject);
+                    if (item.gameObject.name == "Enemy Image") // 移动到目标上
+                    {
+                        gameObject.SetActive(false);
+                        var target = item.gameObject.GetComponentInParent<EnemyUnit>();
+                        Log.Debug("Enemy Image", target.Enemy);
+                        BattleSession.instance.player.PlayACard(cardIdxInHand, target.Enemy);
+                    }
+                    // 没有移动到目标上，无事发生
+                    break;
                 }
-                // if (item.gameObject.name == "Player Image")
-                // {
-                //     Log.Debug("Player Image", item.screenPosition);
-                // }
-                // if (item.gameObject.name == "Enemy Image")
-                // {
-                //     Log.Debug("Enemy Image", item.screenPosition);
-                // }
+                else if (item.gameObject.name == "Battle Field") // 非作用于一个敌人的卡，进入场地
+                {
+                    Log.Debug("Battle Field");
+                    gameObject.SetActive(false);
+                    if (card.effect.TargetType == TargetType.AllEnemy)
+                    {
+                        //TODO
+                    }
+                    else
+                    { // 对玩家起作用的牌
+                        // Log.Debug("Battle Field", item.screenPosition);
+                        BattleSession.instance.player.PlayACard(cardIdxInHand, null);
+                    }
+                    break;
+                }
             }
-
-            if (parentToReturn) // 没打出去
-            {
-                transform.SetParent(parentToReturn);
-                canvasGroup.blocksRaycasts = true;
-                transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
-            }
-            Destroy(placeholder);
         }
     }
 }

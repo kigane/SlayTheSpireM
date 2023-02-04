@@ -12,7 +12,7 @@
         public RoleType role;
         public string description;
 
-        public Action action;
+        public Effect effect;
 
         public Card(CardConfig cardConfig)
         {
@@ -22,17 +22,8 @@
             rarity = (Rarity)cardConfig.Rarity;
             type = (CardType)cardConfig.CardType;
             role = (RoleType)cardConfig.RoleType;
-        }
-
-        public Card(int i, string n, int e, int r, int t, int c, string eff)
-        {
-            id = i;
-            name = n;
-            energy = e;
-            rarity = (Rarity)r;
-            type = (CardType)t;
-            role = (RoleType)c;
-            description = eff;
+            description = cardConfig.Description;
+            effect = EffectFactory.CreateEffect(cardConfig.EffectIds, cardConfig.Values);
         }
 
         public Card(int i, string n, int e, Rarity r, CardType t, RoleType c, string eff)

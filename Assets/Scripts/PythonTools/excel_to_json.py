@@ -15,7 +15,7 @@ def excel_to_json():
     df["Id"] = df["Id"].astype('int32')
     df["Energy"] = df["Energy"].astype('int32')
     df["Values"] = df["Values"].astype('str')
-    df["ActionIds"] = df["Values"].astype('str')
+    df["EffectIds"] = df["EffectIds"].astype('str')
     df.replace({
         "Common": 0,
         "Uncommon": 1,

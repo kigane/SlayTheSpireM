@@ -14,38 +14,16 @@ namespace SlayTheSpireM
 
         protected override void AddListeners()
         {
-            PrepareInitialDeck();
             startBtn.onClick.AddListener(() =>
             {
                 Log.Debug("Start Game");
                 startBtn.gameObject.SetActive(false);
                 exitBtn.gameObject.SetActive(false);
                 // this.SendCommand(new OpenNewScreenCommand(ScreenIds.ModeSelectWindow));
-                SceneManager.LoadScene("MainScene");
                 BattleSession.instance.CacheStartingDeck();
+                SceneManager.LoadScene("MainScene");
             });
             exitBtn.onClick.AddListener(OnExit);
-        }
-
-        // 准备初始卡组
-        private void PrepareInitialDeck()
-        {
-            IPlayerModel playerModel = this.GetModel<IPlayerModel>();
-            CardDataBase cardDataBase = this.GetModel<CardDataBase>();
-            playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[0]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[1]));
-            playerModel.Deck.Add(new Card(cardDataBase.cards[2]));
-            PlayerData.Instance.ResetDeck(playerModel.Deck);
         }
 
         private void OnExit()

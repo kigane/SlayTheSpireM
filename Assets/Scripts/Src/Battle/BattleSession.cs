@@ -25,8 +25,6 @@ namespace SlayTheSpireM
         // 全局状态
         public Deck deck;
         public RoleType role;
-        public BindableProperty<int> playerHp = new(80);
-        public BindableProperty<int> playerMaxHp = new(80);
         public BindableProperty<int> gold = new(99);
         public BindableProperty<int> floor = new(0);
         public int ascension = 0;
@@ -34,33 +32,49 @@ namespace SlayTheSpireM
 
         // 战斗状态
         public Player player;
-        public List<Enemy> enemies;
+        public Enemy[] enemies;
+        public Transform enemyUnitsTransform;
 
         public void CacheStartingDeck()
         {
             Log.Info("Role", role, 16);
             Log.Info("Battle Session Init", 18);
-            //TODO 设置初始卡组
+            // 设置初始卡组
             deck = new Deck(role);
+            player = new Player();
+            enemies = new Enemy[3];
         }
 
         public void SessionStart()
         {
             //TODO 初始化玩家状态，抽牌堆，手牌，能量等
-            player = new Player();
+            player.SetUp();
             //TODO 根据当前楼层生成敌人
-            enemies.Add(new Enemy());
+            // 挂载敌方单位的容器
+            enemyUnitsTransform = GameObject.FindGameObjectWithTag("EnemyUnits").transform;
+            var original = Resources.Load<GameObject>("Prefabs/EnemyUnit");
+            // 生成敌人数据
+            Enemy enemy1 = new();
+            Enemy enemy2 = new();
+            Enemy enemy3 = new();
+            enemies[0] = enemy1;
+            enemies[1] = enemy2;
+            enemies[2] = enemy3;
+            // 逐个生成敌人GO，并挂载到容器对象下。生成顺序对应在数组中的位置
+            Instantiate(original, enemyUnitsTransform);
+            Instantiate(original, enemyUnitsTransform);
+            Instantiate(original, enemyUnitsTransform);
         }
 
         public void ChangeState(BattleStateType type)
         {
             state = type switch
             {// switch expression。 用type和箭头前的表达式进行模式匹配，匹配上了则执行其箭头后的语句 
-                BattleStateType.INIT => new BattleInit(),
-                BattleStateType.PLAYER => new BattlePlayerTurn(),
-                BattleStateType.ENEMY => new BattleEnemyTurn(),
-                BattleStateType.WIN => new BattleWin(),
-                BattleStateType.LOSE => new BattleLose(),
+                BattleStateType.Init => new BattleInit(),
+                BattleStateType.PlayerTurn => new BattlePlayerTurn(),
+                BattleStateType.EnemyTurn => new BattleEnemyTurn(),
+                BattleStateType.Win => new BattleWin(),
+                BattleStateType.Lose => new BattleLose(),
                 _ => null,
             };
             state?.Enter();

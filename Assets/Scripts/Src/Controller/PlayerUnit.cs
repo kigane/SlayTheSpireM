@@ -5,20 +5,17 @@ namespace SlayTheSpireM
 {
     public class PlayerUnit : BaseUnit
     {
-        private IPlayerModel playerModel;
-
         private void Awake()
         {
-            playerModel = this.GetModel<IPlayerModel>();
             // 血条功能
-            playerModel.Hp.Register(val =>
+            BattleSession.instance.player.playerHp.Register(val =>
             {
-                SetHealthSlider((float)val / playerModel.MaxHp.Value);
+                SetHealthSlider((float)val / BattleSession.instance.player.playerMaxHp.Value);
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
 
-            playerModel.MaxHp.Register(val =>
+            BattleSession.instance.player.playerMaxHp.Register(val =>
             {
-                SetHealthSlider((float)playerModel.Hp.Value / val);
+                SetHealthSlider((float)BattleSession.instance.player.playerHp.Value / val);
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
 
@@ -26,28 +23,28 @@ namespace SlayTheSpireM
         {
             if (Input.GetKeyDown(KeyCode.J))
             {
-                playerModel.Hp.Value -= 10;
+                BattleSession.instance.player.playerHp.Value -= 10;
             }
 
             if (Input.GetKeyDown(KeyCode.K))
             {
-                AddBuff(new BuffIcon("attack", BuffType.NUMBER, 0, 1));
+                AddBuff(new Buff("attack", BuffType.AllBattle, 1));
             }
 
             if (Input.GetKeyDown(KeyCode.L))
             {
-                AddBuff(new BuffIcon("buff", BuffType.EFFECT, 1, 0));
+                AddBuff(new Buff("buff", BuffType.LastTurns, 1));
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                PlayerData.Instance.DrawCards(2);
+                BattleSession.instance.player.DrawCards(2);
             }
 
             if (Input.GetKeyDown(KeyCode.V))
             {
-                PlayerData.Instance.discardPile.Add(PlayerData.Instance.handCards[3]);
-                PlayerData.Instance.handCards.RemoveAt(3);
+                BattleSession.instance.player.discardPile.Add(BattleSession.instance.player.handCards[3]);
+                BattleSession.instance.player.handCards.RemoveAt(3);
                 this.SendCommand<UpdateHandCardsViewCommand>();
             }
         }

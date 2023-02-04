@@ -2,16 +2,16 @@
 
 namespace SlayTheSpireM
 {
-    public class GainBlockAction : Action
+    public class GainBlockEffect : Effect
     {
         readonly int amount;
 
-        public GainBlockAction(int n)
+        public GainBlockEffect(int n)
         {
             amount = n;
         }
 
-        public override void Execute()
+        public override void Cast(BattleUnit target)
         {
             target.GainBlock(amount);
         }

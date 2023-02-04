@@ -2,16 +2,16 @@
 
 namespace SlayTheSpireM
 {
-    public class DealDamageAction : Action
+    public class DealDamageEffect : Effect
     {
         readonly int amount;
 
-        public DealDamageAction(int n)
+        public DealDamageEffect(int n)
         {
             amount = n;
         }
 
-        public override void Execute()
+        public override void Cast(BattleUnit target)
         {
             target.GetDamage(amount);
         }

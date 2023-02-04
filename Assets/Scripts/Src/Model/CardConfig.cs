@@ -10,8 +10,9 @@ namespace SlayTheSpireM
         public int Rarity { get; set; }
         public int CardType { get; set; }
         public int RoleType { get; set; }
-        public string ActionIds { get; set; }
+        public string EffectIds { get; set; }
         public string Values { get; set; }
         public string FaceImage { get; set; }
+        public string Description { get; set; }
     }
 }

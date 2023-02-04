@@ -2,16 +2,16 @@
 
 namespace SlayTheSpireM
 {
-    public class DrawCardsAction : Action
+    public class DrawCardsEffect : Effect
     {
         readonly int amount;
 
-        public DrawCardsAction(int n)
+        public DrawCardsEffect(int n)
         {
             amount = n;
         }
 
-        public override void Execute()
+        public override void Cast(BattleUnit target)
         {
             //TODO
             this.SendEvent(DrawCardsEvent.SetAmount(amount));

@@ -4,15 +4,15 @@
     /// 0: Attack
     /// 1: Skill
     /// 2: Power
-    /// 3: State
+    /// 3: Status
     /// 4: Curse
     /// </summary>
     public enum CardType
     {
-        ATTACK,
-        SKILL,
-        POWER,
-        STATE,
-        CURSE
+        Attack,
+        SKill,
+        Power,
+        Status,
+        Curse
     }
 }

@@ -4,8 +4,9 @@ namespace SlayTheSpireM
 {
     public class Enemy : BattleUnit
     {
-        public int maxHp;
-        public int hp;
+        public BindableProperty<int> maxHp = new(20);
+        public BindableProperty<int> hp = new(20);
+        public BindableProperty<int> block = new(0);
         public int intention; // 意图
 
         public void DoAction()
@@ -15,18 +16,12 @@ namespace SlayTheSpireM
 
         public override void GetDamage(int n)
         {
-            throw new System.NotImplementedException();
+            hp.Value -= n;
         }
 
         public override void GainBlock(int n)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public override void ApplyBuff(int buffId)
-        {
-            
-            this.SendEvent(new ApplyBuffEvent() { Buff = null });
+            block.Value += n;
         }
     }
 }

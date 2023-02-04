@@ -7,8 +7,8 @@
     /// </summary>
     public enum Rarity
     {
-        COMMON,
-        UNCOMMON,
-        RARE
+        Common,
+        Uncommon,
+        Rare
     }
 }

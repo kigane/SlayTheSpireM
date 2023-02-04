@@ -11,7 +11,7 @@ namespace SlayTheSpireM
             //TODO 遗物效果结算
             //TODO buff效果结算
             //抽牌
-            PlayerData.Instance.DrawCards(5);
+            BattleSession.instance.player.DrawCards(5);
             //TODO 显示敌人意图
         }
 

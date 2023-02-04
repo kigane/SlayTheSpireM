@@ -252,6 +252,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7212084053463391536}
   - component: {fileID: 1729434753}
+  - component: {fileID: 218520722037625414}
   m_Layer: 5
   m_Name: EnemyUnit
   m_TagString: Untagged
@@ -299,6 +300,18 @@ MonoBehaviour:
   healthBarSlider: {fileID: 8315979837011318409}
   buffsTransform: {fileID: 7212084053641970546}
   intention: {fileID: 7212084054047629603}
+--- !u!225 &218520722037625414
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7212084053463391695}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7212084053641970545
 GameObject:
   m_ObjectHideFlags: 0

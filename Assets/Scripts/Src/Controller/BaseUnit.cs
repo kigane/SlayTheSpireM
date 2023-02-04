@@ -9,18 +9,15 @@ namespace SlayTheSpireM
 {
     public class BaseUnit : BaseMonoController
     {
-        public List<BuffIcon> Buffs = new();
+        public List<Buff> Buffs = new();
 
         [SerializeField] Slider healthBarSlider;
         [SerializeField] Transform buffsTransform;
 
         private void Awake()
         {
-            //
-            this.RegisterEvent<ApplyBuffEvent>(e =>
-            {
-                AddBuff(e.Buff);
-            }).UnRegisterWhenGameObjectDestroyed(gameObject);
+            //TODO
+            return;
         }
 
         protected void SetHealthSlider(float val)
@@ -34,14 +31,13 @@ namespace SlayTheSpireM
         /// 如果是已有的buff，则更新其值
         /// </summary>
         /// <param name="buff"></param>
-        public void AddBuff(BuffIcon buff)
+        public void AddBuff(Buff buff)
         {
             for (int i = 0; i < Buffs.Count; i++)
             {
                 if (Buffs[i].Name == buff.Name)
                 {
                     Buffs[i] += buff;
-                    Log.Debug(Buffs[i].Value);
                     Buffs[i].Text.text = Buffs[i].Value.ToString();
                     return;
                 }

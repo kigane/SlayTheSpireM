@@ -4,6 +4,6 @@ namespace SlayTheSpireM
 {
     public class ApplyBuffEvent
     {
-        public BuffIcon Buff { get; set; }
+        public Buff Buff { get; set; }
     }
 }
