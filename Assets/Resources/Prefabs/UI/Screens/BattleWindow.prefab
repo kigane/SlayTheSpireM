@@ -343,6 +343,7 @@ MonoBehaviour:
   discardPileCountText: {fileID: 5390300199643096236}
   exhaustedPileCountText: {fileID: 5390300199320678181}
   energyText: {fileID: 5390300199287563192}
+  endTurnBtn: {fileID: 5390300198610123892}
 --- !u!1 &5390300198498700726
 GameObject:
   m_ObjectHideFlags: 0

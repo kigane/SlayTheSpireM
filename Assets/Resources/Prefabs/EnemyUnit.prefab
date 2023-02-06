@@ -300,6 +300,8 @@ MonoBehaviour:
   healthBarSlider: {fileID: 8315979837011318409}
   buffsTransform: {fileID: 7212084053641970546}
   intention: {fileID: 7212084054047629603}
+  enemyImage: {fileID: 7212084053383178359}
+  id: 0
 --- !u!225 &218520722037625414
 CanvasGroup:
   m_ObjectHideFlags: 0

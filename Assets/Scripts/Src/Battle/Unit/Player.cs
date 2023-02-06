@@ -12,9 +12,12 @@ namespace SlayTheSpireM
         public List<int> relics = new();
         public BindableProperty<int> currEnergy = new(3);
         public BindableProperty<int> maxEnergy = new(3);
-        public BindableProperty<int> playerHp = new(80);
-        public BindableProperty<int> playerMaxHp = new(80);
-        public BindableProperty<int> playerBlock = new(0);
+
+        public Player()
+        {
+            hp.Value = 80;
+            maxHp.Value = 80;
+        }
 
         public void SetUp()
         {
@@ -32,16 +35,24 @@ namespace SlayTheSpireM
         }
 
         // 出牌
-        public void PlayACard(int idxInHand, BattleUnit target)
+        public bool PlayACard(int idxInHand, BattleUnit target)
         {
+            Log.Debug("PlayACard", idxInHand + " " + target);
             // 设置Action目标为player。
             target ??= this;
             var deck = BattleSession.instance.deck;
             var card = deck.GetCardById(handCards[idxInHand]);
+            if (currEnergy.Value < card.energy)
+            {
+                Log.Info("Energy is not enough!");
+                return false;
+            }
             card.effect.Cast(target);
+            currEnergy.Value -= card.energy;
             discardPile.Add(handCards[idxInHand]);
             handCards.RemoveAt(idxInHand);
             this.SendEvent<HandCardsUpdateEvent>();
+            return true;
         }
 
         public void DrawCards(int n)
@@ -67,15 +78,5 @@ namespace SlayTheSpireM
             drawPile[1] = 2;
         }
 
-        public override void GetDamage(int n)
-        {
-            playerHp.Value -= n;
-        }
-
-        public override void GainBlock(int n)
-        {
-            playerBlock.Value += n;
-            Log.Debug(playerBlock.Value);
-        }
     }
 }

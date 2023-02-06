@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace SlayTheSpireM
 {
-    public class BaseUnit : BaseMonoController
+    public class BaseUnitController : BaseMonoController
     {
         public List<Buff> Buffs = new();
 

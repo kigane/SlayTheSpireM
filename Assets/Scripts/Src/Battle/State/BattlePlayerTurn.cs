@@ -12,6 +12,7 @@ namespace SlayTheSpireM
             //TODO buff效果结算
             //抽牌
             BattleSession.instance.player.DrawCards(5);
+            BattleSession.instance.player.currEnergy.Value = BattleSession.instance.player.maxEnergy.Value;
             //TODO 显示敌人意图
         }
 

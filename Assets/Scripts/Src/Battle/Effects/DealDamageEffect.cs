@@ -5,6 +5,7 @@ namespace SlayTheSpireM
     public class DealDamageEffect : Effect
     {
         readonly int amount;
+        float multiplier = 1.0f;
 
         public DealDamageEffect(int n)
         {
@@ -13,7 +14,9 @@ namespace SlayTheSpireM
 
         public override void Cast(BattleUnit target)
         {
-            target.GetDamage(amount);
+            if (target.CheckIsVulnerable())
+                multiplier = 1.5f;
+            target.GetDamage((int)(amount * multiplier));
         }
     }
 }

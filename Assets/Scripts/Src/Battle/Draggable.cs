@@ -3,54 +3,65 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using System.Collections;
 
 namespace SlayTheSpireM
 {
     public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        public Transform parentToReturn;
-        private GameObject placeholder;
-        private CanvasGroup canvasGroup;
-        private float offsetX;
-        private float offsetY;
-        private RectTransform rectTransform;
-        private Vector2 startPoint;
         public GameObject lineUi;
-
-        private void Awake()
-        {
-            canvasGroup = GetComponent<CanvasGroup>();
-            rectTransform = GetComponent<RectTransform>();
-        }
+        Vector2 startPoint;
+        int cardIdxInHand;
+        Card card;
+        TargetType targetType;
 
         // 点击时确定pointerDrag，只要不放开pointerDrag就不会变。
         public void OnBeginDrag(PointerEventData eventData)
         {
+            // 获取打出的卡牌在手牌中的序号
+            cardIdxInHand = transform.GetSiblingIndex();
+            card = BattleSession.instance.deck.GetCardById(BattleSession.instance.player.handCards[cardIdxInHand]);
+            targetType = card.effect.TargetType;
+
             startPoint = eventData.position;
-            eventData.pointerDrag.transform.DOScale(new Vector3(1.5f, 1.5f, 1f), 0.5f);
+            Log.Debug("Begin Scale", eventData.pointerDrag.name);
+            eventData.pointerDrag.transform.DOScale(new Vector3(1.5f, 1.5f, 1f), 0.3f);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
             // 指示箭头
-            var line = lineUi.GetComponent<Line>();
-            lineUi.SetActive(true);
-            line.SetStartPoint(startPoint, eventData.pressEventCamera);
-            line.SetEndPoint(eventData.position, eventData.pressEventCamera);
+            if (targetType == TargetType.Enemy)
+            {
+                var line = lineUi.GetComponent<Line>();
+                lineUi.SetActive(true);
+                line.SetStartPoint(startPoint, eventData.pressEventCamera);
+                line.SetEndPoint(eventData.position, eventData.pressEventCamera);
+            }
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
             // 表现
             lineUi.SetActive(false);
-            eventData.pointerDrag.transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f);
 
-            // 获取打出的卡牌在手牌中的序号
-            var cardIdxInHand = transform.GetSiblingIndex();
-            var card = BattleSession.instance.deck.GetCardById(BattleSession.instance.player.handCards[cardIdxInHand]);
+            if (targetType != TargetType.Enemy)
+            {
+                var effectGOTransform = Instantiate(transform.gameObject, Camera.main.ScreenToWorldPoint(eventData.position), Quaternion.identity, transform.parent.parent).transform;
+                effectGOTransform.DOMove(Camera.main.ScreenToWorldPoint(new Vector3(810, 540, 0)), 0.7f).OnComplete(() => Destroy(effectGOTransform.gameObject));
+                // eventData.pointerDrag.transform.DOMove(Camera.main.ScreenToWorldPoint(new Vector3(810, 540, 0)), 0.7f).OnComplete(() => eventData.pointerDrag.transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f));
+            }
+
+            // 直接设置会因为出牌速度快，DoScale还没跑完导致，设置后被DoScale又改回去.
+            // Log.Debug($"{eventData.pointerDrag.name} Local Scale", eventData.pointerDrag.transform.localScale);
+            // eventData.pointerDrag.transform.localScale = new Vector3(1f, 1f, 1f);
+            // Log.Debug($"{eventData.pointerDrag.name} Local Scale", eventData.pointerDrag.transform.localScale);
+            eventData.pointerDrag.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f);
+
+
             Log.Debug("===================");
             Log.Debug("打出牌在手牌中的序号", cardIdxInHand.ToString());
-            Log.Debug("Card Target Type", card.effect.TargetType);
+            Log.Debug("Card Target Type", targetType);
             Log.Debug("===================");
 
             // 确定卡牌作用对象
@@ -58,14 +69,15 @@ namespace SlayTheSpireM
             EventSystem.current.RaycastAll(eventData, raycastResults);
             foreach (var item in raycastResults)
             {
-                if (card.effect.TargetType == TargetType.Enemy) // 作用于一个敌人的卡
+                if (targetType == TargetType.Enemy) // 作用于一个敌人的卡
                 {
                     if (item.gameObject.name == "Enemy Image") // 移动到目标上
                     {
-                        gameObject.SetActive(false);
-                        var target = item.gameObject.GetComponentInParent<EnemyUnit>();
+                        var target = item.gameObject.GetComponentInParent<EnemyUnitController>();
                         Log.Debug("Enemy Image", target.Enemy);
-                        BattleSession.instance.player.PlayACard(cardIdxInHand, target.Enemy);
+                        // 打出手牌后触发HandCardsUpdateEvent。会重新给卡牌编号并自动减少显示的卡牌。
+                        var success = BattleSession.instance.player.PlayACard(cardIdxInHand, target.Enemy);
+                        // gameObject.SetActive(!success);
                     }
                     // 没有移动到目标上，无事发生
                     break;
@@ -73,19 +85,26 @@ namespace SlayTheSpireM
                 else if (item.gameObject.name == "Battle Field") // 非作用于一个敌人的卡，进入场地
                 {
                     Log.Debug("Battle Field");
-                    gameObject.SetActive(false);
-                    if (card.effect.TargetType == TargetType.AllEnemy)
+                    if (targetType == TargetType.AllEnemy)
                     {
                         //TODO
                     }
                     else
                     { // 对玩家起作用的牌
                         // Log.Debug("Battle Field", item.screenPosition);
-                        BattleSession.instance.player.PlayACard(cardIdxInHand, null);
+                        var success = BattleSession.instance.player.PlayACard(cardIdxInHand, null);
+                        // gameObject.SetActive(!success);
                     }
                     break;
                 }
             }
+        }
+
+        private IEnumerator ShowCardInCenter(Transform transform)
+        {
+            transform.DOMove(Camera.main.ScreenToWorldPoint(new Vector3(810, 540, 0)), 0.7f).OnComplete(() => transform.localScale = new Vector3(1f, 1f, 1f));
+            transform.SetParent(transform.parent);
+            yield return null;
         }
     }
 }

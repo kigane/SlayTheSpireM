@@ -14,6 +14,7 @@ namespace SlayTheSpireM
         public TextMeshProUGUI discardPileCountText;
         public TextMeshProUGUI exhaustedPileCountText;
         public TextMeshProUGUI energyText;
+        public Button endTurnBtn;
 
         private IPlayerModel playerModel;
 
@@ -29,7 +30,7 @@ namespace SlayTheSpireM
             {
                 // Log.Info(e.GetType().Name);
                 var hc = BattleSession.instance.player.handCards;
-                Log.Debug(hc);
+                Log.Debug("当前手牌", hc);
                 var deck = BattleSession.instance.deck;
 
                 // 显示手牌
@@ -49,7 +50,7 @@ namespace SlayTheSpireM
 
                 SetText(drawPileCountText, BattleSession.instance.player.drawPile.Count);
                 SetText(discardPileCountText, BattleSession.instance.player.discardPile.Count);
-            });
+            }).UnRegisterWhenGameObjectDestroyed(gameObject); // 一定要解注册，防止闭包问题
 
             BattleSession.instance.player.maxEnergy.Register(val =>
             {
@@ -60,6 +61,11 @@ namespace SlayTheSpireM
             {
                 SetText(energyText, $"{val}/{BattleSession.instance.player.maxEnergy}");
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
+
+            endTurnBtn.onClick.AddListener(() =>
+            {
+                BattleSession.instance.ChangeState(BattleStateType.EnemyTurn);
+            });
         }
 
         private void SetText(TextMeshProUGUI tmp, string content)
