@@ -57,13 +57,35 @@ namespace SlayTheSpireM
 
         public void DrawCards(int n)
         {
-            //TODO 超过手牌上限时，直接将牌放入弃牌堆
+            //FIXME 边缘情况: 抽两张牌，但抽牌堆和弃牌堆总共只有一张牌。
+            // 超过手牌上限时，直接将牌放入弃牌堆
+            if (n > (10 - handCards.Count))
+            {
+                int j = n + handCards.Count - 10;
+                discardPile.AddRange(drawPile.GetRange(0, j));
+                drawPile.RemoveRange(0, j);
+                n = Mathf.Max(n - j, 0);
+            }
+
             for (int i = 0; i < n; i++)
             {
+                if (drawPile.Count == 0)
+                {
+                    (drawPile, discardPile) = (discardPile, drawPile);
+                    Shuffle();
+                }
                 handCards.Add(drawPile[0]);
                 drawPile.RemoveAt(0);
             }
             this.SendEvent<HandCardsUpdateEvent>();
+        }
+
+        public void DiscardHandCards()
+        {
+            Log.Debug("手牌", handCards);
+            discardPile.AddRange(handCards);
+            Log.Debug("弃牌堆", discardPile);
+            handCards.Clear();
         }
 
         public void Shuffle()
@@ -75,7 +97,7 @@ namespace SlayTheSpireM
                 Helper.Swap(drawPile, i, idx);
             }
             //FIXME 需要移除的移除测试代码
-            drawPile[1] = 2;
+            // drawPile[1] = 2;
         }
 
     }
