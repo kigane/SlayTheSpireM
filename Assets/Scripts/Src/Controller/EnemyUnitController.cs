@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using QFramework;
 using DG.Tweening;
+using TMPro;
 
 namespace SlayTheSpireM
 {
@@ -10,6 +11,8 @@ namespace SlayTheSpireM
     {
         [SerializeField] Image intention;
         [SerializeField] Image enemyImage;
+        [SerializeField] GameObject blockGO;
+        [SerializeField] TextMeshProUGUI blockNumberText;
         [SerializeField] int id;
         CanvasGroup canvasGroup;
         private Enemy enemy;
@@ -20,7 +23,7 @@ namespace SlayTheSpireM
             canvasGroup = GetComponent<CanvasGroup>();
             id = transform.GetSiblingIndex();
             enemy = BattleSession.instance.enemies[id];
-            enemy.target = this;
+            enemy.view = this;
 
             enemy.hp.Register(val =>
             {
@@ -36,13 +39,27 @@ namespace SlayTheSpireM
             {
                 SetHealthSlider((float)enemy.hp.Value / val);
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
+
+            enemy.block.Register(val =>
+            {
+                if (val > 0)
+                {
+                    blockGO.SetActive(true);
+                    blockNumberText.text = val.ToString();
+                }
+                else
+                {
+                    blockGO.SetActive(false);
+                }
+            }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.U))
             {
-                AddBuff(new Buff("attack", BuffType.AllBattle, 2));
+                // AddBuff(new Buff("attack", BuffType.AllBattle, 2));
+                new GainBlockEffect(5).Cast(enemy);
             }
 
             if (Input.GetKeyDown(KeyCode.I))

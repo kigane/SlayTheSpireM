@@ -15,12 +15,27 @@ namespace SlayTheSpireM
         public BindableProperty<int> block = new(0);
 
         //FIXME 相互依赖
-        public BaseUnitController target;
+        public BaseUnitController view;
 
-        public virtual void GetDamage(int n)
+        public virtual void GetDamage(int damage)
         {
-            hp.Value -= n;
-            FloatingTextManager.Instance.ShowFloatingText($"-{n}", target.transform, Color.red);
+            var color = Color.red;
+            if (block.Value > 0)
+            {
+                if (damage < block.Value)
+                {
+                    block.Value -= damage;
+                    damage = 0;
+                    color = Color.blue;
+                }
+                else
+                {
+                    damage -= block.Value;
+                    block.Value = 0;
+                }
+            }
+            hp.Value -= damage;
+            FloatingTextManager.Instance.ShowFloatingText($"-{damage}", view.transform, color);
         }
 
         public virtual void GainBlock(int n)
@@ -33,8 +48,8 @@ namespace SlayTheSpireM
         {
             Log.Debug("BattleUnit.ApplyBuff", buff);
             buffs.Add(buff);
-            if (target != null)
-                target.AddBuff(buff);
+            if (view != null)
+                view.AddBuff(buff);
         }
 
         public void RemoveBuff(Buff buff)

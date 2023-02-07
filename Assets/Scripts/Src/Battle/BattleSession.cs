@@ -64,6 +64,15 @@ namespace SlayTheSpireM
             Instantiate(original, enemyUnitsTransform);
             Instantiate(original, enemyUnitsTransform);
             Instantiate(original, enemyUnitsTransform);
+            //TODO 在实例化后，获取Controller，再根据Controller中提供的Id生成敌人数据，将该数据注入Controller中
+        }
+
+        public void CleanAllEnemiesBlock()
+        {
+            foreach (var enemy in enemies)
+            {
+                enemy.block.Value = 0;
+            }
         }
 
         public void ChangeState(BattleStateType type)

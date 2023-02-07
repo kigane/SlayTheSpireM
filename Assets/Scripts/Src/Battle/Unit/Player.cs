@@ -73,6 +73,7 @@ namespace SlayTheSpireM
                 {
                     (drawPile, discardPile) = (discardPile, drawPile);
                     Shuffle();
+                    discardPile.Clear();
                 }
                 handCards.Add(drawPile[0]);
                 drawPile.RemoveAt(0);

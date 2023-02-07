@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using QFramework;
+using TMPro;
 
 namespace SlayTheSpireM
 {
     public class PlayerUnitController : BaseUnitController
     {
+        [SerializeField] GameObject blockGO;
+        [SerializeField] TextMeshProUGUI blockNumberText;
+
         private void Awake()
         {
             // 血条功能
@@ -21,6 +25,19 @@ namespace SlayTheSpireM
             BattleSession.instance.player.maxHp.Register(val =>
             {
                 SetHealthSlider((float)BattleSession.instance.player.hp.Value / val);
+            }).UnRegisterWhenGameObjectDestroyed(gameObject);
+
+            BattleSession.instance.player.block.Register(val =>
+            {
+                if (val > 0)
+                {
+                    blockGO.SetActive(true);
+                    blockNumberText.text = val.ToString();
+                }
+                else
+                {
+                    blockGO.SetActive(false);
+                }
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
 
