@@ -16,11 +16,11 @@ namespace SlayTheSpireM
             DontDestroyOnLoad(gameObject);
         }
 
-        public void ShowFloatingText(string content, Transform transform)
+        public void ShowFloatingText(string content, Transform transform, Color textColor)
         {
             var go = Instantiate(textPrefab, transform.position, Quaternion.identity, transform);
             go.transform.position = transform.position;
-            go.GetComponent<FloatingText>().ShowFloatingText(content, go.transform);
+            go.GetComponent<FloatingText>().ShowFloatingText(content, go.transform, textColor);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace SlayTheSpireM
 
         private void OnClick()
         {
-            FloatingTextManager.Instance.ShowFloatingText("开创", transform);
+            FloatingTextManager.Instance.ShowFloatingText("开创", transform, Color.white);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using QFramework;
+using UnityEngine;
 
 namespace SlayTheSpireM
 {
@@ -19,7 +20,7 @@ namespace SlayTheSpireM
         public virtual void GetDamage(int n)
         {
             hp.Value -= n;
-            FloatingTextManager.Instance.ShowFloatingText($"-{n}", target.transform);
+            FloatingTextManager.Instance.ShowFloatingText($"-{n}", target.transform, Color.red);
         }
 
         public virtual void GainBlock(int n)

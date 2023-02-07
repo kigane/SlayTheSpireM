@@ -14,10 +14,13 @@ namespace SlayTheSpireM
         int cardIdxInHand;
         Card card;
         TargetType targetType;
+        Camera uiCamera;
 
         // 点击时确定pointerDrag，只要不放开pointerDrag就不会变。
         public void OnBeginDrag(PointerEventData eventData)
         {
+            uiCamera = eventData.pressEventCamera;
+
             // 获取打出的卡牌在手牌中的序号
             cardIdxInHand = transform.GetSiblingIndex();
             card = BattleSession.instance.deck.GetCardById(BattleSession.instance.player.handCards[cardIdxInHand]);
@@ -80,7 +83,11 @@ namespace SlayTheSpireM
                     var success = false;
 
                     // 在打出前复制，否则打出后牌的内容会变。(因为手牌更新方式)
-                    var effectGOTransform = Instantiate(transform.gameObject, Camera.main.ScreenToWorldPoint(eventData.position), Quaternion.identity, transform.parent.parent).transform;
+                    var effectGOTransform = Instantiate(transform.gameObject, uiCamera.ScreenToWorldPoint(eventData.position), Quaternion.identity, transform.parent.parent).transform;
+                    effectGOTransform.GetComponent<CardInfo>().index.alpha = 0;
+                    var effectRectTransform = effectGOTransform.GetComponent<RectTransform>();
+                    RectTransformUtility.ScreenPointToWorldPointInRectangle(transform.parent.parent.GetComponent<RectTransform>(), startPoint, uiCamera, out var cardPos);
+                    effectRectTransform.position = cardPos;
 
                     // Log.Debug("Battle Field");
                     if (targetType == TargetType.AllEnemy)
@@ -96,19 +103,15 @@ namespace SlayTheSpireM
 
                     // 卡牌移动到中间展示动画 
                     if (success)
-                        effectGOTransform.DOMove(Camera.main.ScreenToWorldPoint(new Vector3(810, 540, 0)), 0.7f).OnComplete(() => Destroy(effectGOTransform.gameObject));
-                    // eventData.pointerDrag.transform.DOMove(Camera.main.ScreenToWorldPoint(new Vector3(810, 540, 0)), 0.7f).OnComplete(() => eventData.pointerDrag.transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f));
-
+                    {
+                        RectTransformUtility.ScreenPointToWorldPointInRectangle(transform.parent.parent.GetComponent<RectTransform>(), new Vector2(910, 350), uiCamera, out var endAnchoredPos);
+                        effectRectTransform.DOMove(endAnchoredPos, 0.4f).OnComplete(() => Destroy(effectGOTransform.gameObject));
+                    }
+                    else
+                        Destroy(effectGOTransform.gameObject);
                     break;
                 }
             }
-        }
-
-        private IEnumerator ShowCardInCenter(Transform transform)
-        {
-            transform.DOMove(Camera.main.ScreenToWorldPoint(new Vector3(810, 540, 0)), 0.7f).OnComplete(() => transform.localScale = new Vector3(1f, 1f, 1f));
-            transform.SetParent(transform.parent);
-            yield return null;
         }
     }
 }

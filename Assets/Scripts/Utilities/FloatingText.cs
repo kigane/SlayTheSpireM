@@ -15,10 +15,11 @@ namespace SlayTheSpireM
             rectTransform = GetComponent<RectTransform>();
         }
 
-        public void ShowFloatingText(string content, Transform transform)
+        public void ShowFloatingText(string content, Transform transform, Color textColor)
         {
             gameObject.SetActive(true);
             text.text = content;
+            text.color = textColor;
             // rectTransform的旋转只会旋转Rect对象，不会实际旋转Rect内的文字。
             // text.transform.eulerAngles = new Vector3(0, 0, -90f);
             Vector2 screenPos = Camera.main.WorldToScreenPoint(transform.position);
