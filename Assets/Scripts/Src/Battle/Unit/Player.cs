@@ -48,7 +48,7 @@ namespace SlayTheSpireM
                 Log.Info("Energy is not enough!");
                 return false;
             }
-            card.effect.Cast(target);
+            card.Play(target);
             currEnergy.Value -= card.energy;
             discardPile.Add(handCards[idxInHand]);
             handCards.RemoveAt(idxInHand);

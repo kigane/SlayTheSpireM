@@ -8,7 +8,7 @@ namespace SlayTheSpireM
     {
         static readonly string ConnectionString = "Data Source=Assets/DB/SlayTheSpire.db";
 
-        public static List<CardConfig> QueryCardConfigByRole(int roleType)
+        public static List<CardConfig> QueryCardConfigByRole(int roleType, bool needAll = true)
         {
             using var connection = new SqliteConnection(ConnectionString);
             connection.Open();
@@ -17,7 +17,14 @@ namespace SlayTheSpireM
 
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = "SELECT * FROM Card as c INNER JOIN CardEffect AS ce on c.Id = ce.CardId WHERE Role=@type or Role=0 ORDER by Id";
+                if (needAll)
+                {
+                    command.CommandText = "SELECT * FROM Card as c INNER JOIN CardEffect AS ce on c.Id = ce.CardId WHERE Role=@type or Role=0 ORDER by Id";
+                }
+                else
+                {
+                    command.CommandText = "SELECT * FROM Card as c INNER JOIN CardEffect AS ce on c.Id = ce.CardId WHERE Role=@type ORDER by Id";
+                }
                 command.Parameters.AddWithValue("@type", roleType);
                 command.Prepare();
 
@@ -38,6 +45,7 @@ namespace SlayTheSpireM
                         EffectIds = reader.GetInt32(8).ToString(),
                         Values = reader.GetInt32(9).ToString(),
                     };
+                    Log.Debug(currConfig);
 
                     if (prevConfig == null)
                     {

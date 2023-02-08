@@ -34,7 +34,7 @@ namespace SlayTheSpireM
             {
                 ret += mEffects[i].ToString() + "\n";
             }
-            return base.ToString();
+            return ret;
         }
     }
 }

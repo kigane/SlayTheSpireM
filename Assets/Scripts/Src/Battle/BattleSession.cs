@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using QFramework;
 using UnityEngine;
@@ -37,8 +38,7 @@ namespace SlayTheSpireM
 
         public void CacheStartingDeck()
         {
-            Log.Info("Role", role, 16);
-            Log.Info("Battle Session Init", 18);
+            role = RoleType.Ironclad;
             // 设置初始卡组
             deck = new Deck(role);
             player = new Player();
@@ -54,9 +54,9 @@ namespace SlayTheSpireM
             enemyUnitsTransform = GameObject.FindGameObjectWithTag("EnemyUnits").transform;
             var original = Resources.Load<GameObject>("Prefabs/EnemyUnit");
             // 生成敌人数据
-            Enemy enemy1 = new(1);
-            Enemy enemy2 = new(1);
-            Enemy enemy3 = new(1);
+            Enemy enemy1 = new(5);
+            Enemy enemy2 = new(5);
+            Enemy enemy3 = new(5);
             enemies[0] = enemy1;
             enemies[1] = enemy2;
             enemies[2] = enemy3;
@@ -73,6 +73,14 @@ namespace SlayTheSpireM
             {
                 if (enemy != null)
                     enemy.block.Value = 0;
+            }
+        }
+
+        public void EnemiesDoIntent()
+        {
+            foreach (var enemy in enemies)
+            {
+                enemy.DoAction();
             }
         }
 
@@ -93,6 +101,33 @@ namespace SlayTheSpireM
         private void Update()
         {
             state?.OnUpdate();
+        }
+
+        public void StartPlayerTurn()
+        {
+            foreach (var enemy in enemies)
+            {
+                enemy.GenerateRandomIntention();
+            }
+            this.SendCommand<StartPlayerTurnCommand>();
+        }
+
+        public void EndPlayerTurn()
+        {
+            this.SendCommand<EndPlayerTurnCommand>();
+            StartCoroutine(nameof(EndEnemyTurn));
+        }
+
+        public void EndEnemyTurn()
+        {
+            StartCoroutine(nameof(EndEnemyTurnAfterTwoSeconds));
+        }
+
+        private IEnumerator EndEnemyTurnAfterTwoSeconds()
+        {
+            Log.Debug("EndEnemyTurn", 16);
+            yield return new WaitForSeconds(2);
+            ChangeState(BattleStateType.PlayerTurn);
         }
     }
 }

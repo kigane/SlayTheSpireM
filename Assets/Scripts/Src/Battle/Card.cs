@@ -6,6 +6,7 @@
 
         // 需要展示的信息
         public string name;
+        public string spritePath;
         public int energy;
         public Rarity rarity;
         public CardType type;
@@ -18,6 +19,7 @@
         {
             id = cardConfig.Id;
             name = cardConfig.Name;
+            spritePath = cardConfig.SpritePath;
             energy = cardConfig.Energy;
             rarity = (Rarity)cardConfig.Rarity;
             type = (CardType)cardConfig.CardType;
@@ -26,31 +28,14 @@
             description = effect.ToString();
         }
 
-        public Card(int i, string n, int e, Rarity r, CardType t, RoleType c, string eff)
+        public void Play(BattleUnit target)
         {
-            id = i;
-            name = n;
-            energy = e;
-            rarity = r;
-            type = t;
-            role = c;
-            description = eff;
-        }
-
-        public Card(Card card)
-        {
-            id = card.id;
-            name = card.name;
-            energy = card.energy;
-            rarity = card.rarity;
-            type = card.type;
-            role = card.role;
-            description = card.description;
+            effect.Cast(target);
         }
 
         public override string ToString()
         {
-            return $"{id} {name}: {energy} {rarity} {type} {role} {description}";
+            return $"{id} {name} {spritePath}: {energy} {rarity} {type} {role} {description}";
         }
     }
 }

@@ -11,6 +11,7 @@ namespace SlayTheSpireM
 
         private void Awake()
         {
+            BattleSession.instance.player.view = this;
             // 血条功能
             BattleSession.instance.player.hp.Register(val =>
             {

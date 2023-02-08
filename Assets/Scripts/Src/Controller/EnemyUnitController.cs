@@ -9,7 +9,7 @@ namespace SlayTheSpireM
 {
     public class EnemyUnitController : BaseUnitController
     {
-        [SerializeField] Image intention;
+        [SerializeField] GameObject intention;
         [SerializeField] Image enemyImage;
         [SerializeField] GameObject blockGO;
         [SerializeField] TextMeshProUGUI blockNumberText;
@@ -51,6 +51,17 @@ namespace SlayTheSpireM
                 {
                     blockGO.SetActive(false);
                 }
+            }).UnRegisterWhenGameObjectDestroyed(gameObject);
+
+            this.RegisterEvent<PlayerTurnStartEvent>(e =>
+            {
+                intention.GetComponent<IntentDisplayer>().SetData(enemy.CurrIntent);
+                intention.SetActive(true);
+            }).UnRegisterWhenGameObjectDestroyed(gameObject);
+
+            this.RegisterEvent<PlayerTurnEndEvent>(e =>
+            {
+                intention.SetActive(false);
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
 
