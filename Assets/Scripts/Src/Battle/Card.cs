@@ -22,8 +22,8 @@
             rarity = (Rarity)cardConfig.Rarity;
             type = (CardType)cardConfig.CardType;
             role = (RoleType)cardConfig.RoleType;
-            description = cardConfig.Description;
             effect = EffectFactory.CreateEffect(cardConfig.EffectIds, cardConfig.Values);
+            description = effect.ToString();
         }
 
         public Card(int i, string n, int e, Rarity r, CardType t, RoleType c, string eff)

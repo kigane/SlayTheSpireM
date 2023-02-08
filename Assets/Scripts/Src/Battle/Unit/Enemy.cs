@@ -4,7 +4,17 @@ namespace SlayTheSpireM
 {
     public class Enemy : BattleUnit
     {
-        public int intention; // 意图
+        public Enemy(int id)
+        {
+            this.id = id;
+        }
+
+        public string intention; // 意图
+
+        public void GenerateRandomIntention()
+        {
+            
+        }
 
         public void DoAction()
         {

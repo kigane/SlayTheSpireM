@@ -36,5 +36,10 @@ namespace SlayTheSpireM
             a.Value += b.Value;
             return a;
         }
+
+        public override string ToString()
+        {
+            return Value + " " + Name + ".";
+        }
     }
 }

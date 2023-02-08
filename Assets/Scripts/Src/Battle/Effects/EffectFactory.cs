@@ -45,10 +45,10 @@ namespace SlayTheSpireM
             int value = int.Parse(val);
             return int.Parse(id) switch
             {
-                0 => new DealDamageEffect(value) { TargetType = TargetType.Enemy },
-                1 => new GainBlockEffect(value) { TargetType = TargetType.Player },
-                2 => new DrawCardsEffect(value) { TargetType = TargetType.None },
-                3 => new ApplyBuffEffect(value) { TargetType = TargetType.Enemy },
+                1 => new DealDamageEffect(value) { TargetType = TargetType.Enemy, Description = "Deal # damage." },
+                2 => new GainBlockEffect(value) { TargetType = TargetType.Self, Description = "Gain # block." },
+                3 => new DrawCardsEffect(value) { TargetType = TargetType.None, Description = "Draw # cards." },
+                4 => new ApplyBuffEffect(value) { TargetType = TargetType.Enemy, Description = "Apply #" },
                 _ => throw new NotSupportedException("不支持的效果"),
             };
         }

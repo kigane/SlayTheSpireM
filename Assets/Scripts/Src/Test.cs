@@ -43,6 +43,9 @@ namespace SlayTheSpireM
         private void Start()
         {
             // DoTest();
+            var ret = SqliteManager.QueryCardConfigByRole(1);
+            Debug.Log(ret);
+            Log.Debug(ret);
         }
 
         public GameObject LoadGO(string path)

@@ -26,5 +26,15 @@ namespace SlayTheSpireM
                 mEffects[i].Cast(target);
             }
         }
+
+        public override string ToString()
+        {
+            string ret = "";
+            for (int i = 0; i < mEffects.Count; i++)
+            {
+                ret += mEffects[i].ToString() + "\n";
+            }
+            return base.ToString();
+        }
     }
 }

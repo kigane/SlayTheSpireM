@@ -12,7 +12,11 @@ namespace SlayTheSpireM
         public int RoleType { get; set; }
         public string EffectIds { get; set; }
         public string Values { get; set; }
-        public string FaceImage { get; set; }
-        public string Description { get; set; }
+        public string SpritePath { get; set; }
+
+        public override string ToString()
+        {
+            return $"Card: {Id} {Name}: {Energy} {Rarity} {CardType} {RoleType} [{EffectIds} | {Values}] {SpritePath}";
+        }
     }
 }

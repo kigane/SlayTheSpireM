@@ -15,6 +15,7 @@ namespace SlayTheSpireM
 
         public Player()
         {
+            id = 0;
             hp.Value = 80;
             maxHp.Value = 80;
         }

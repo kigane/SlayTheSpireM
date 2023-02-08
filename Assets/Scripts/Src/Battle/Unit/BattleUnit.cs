@@ -6,6 +6,7 @@ namespace SlayTheSpireM
 {
     public abstract class BattleUnit : ICanSendEvent
     {
+        public int id;
         // 战斗时状态
         public int strength;
         public int dexterity;
@@ -14,7 +15,6 @@ namespace SlayTheSpireM
         public BindableProperty<int> maxHp = new(20);
         public BindableProperty<int> block = new(0);
 
-        //FIXME 相互依赖
         public BaseUnitController view;
 
         public virtual void GetDamage(int damage)

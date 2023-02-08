@@ -54,9 +54,9 @@ namespace SlayTheSpireM
             enemyUnitsTransform = GameObject.FindGameObjectWithTag("EnemyUnits").transform;
             var original = Resources.Load<GameObject>("Prefabs/EnemyUnit");
             // 生成敌人数据
-            Enemy enemy1 = new();
-            Enemy enemy2 = new();
-            Enemy enemy3 = new();
+            Enemy enemy1 = new(1);
+            Enemy enemy2 = new(1);
+            Enemy enemy3 = new(1);
             enemies[0] = enemy1;
             enemies[1] = enemy2;
             enemies[2] = enemy3;
@@ -71,7 +71,8 @@ namespace SlayTheSpireM
         {
             foreach (var enemy in enemies)
             {
-                enemy.block.Value = 0;
+                if (enemy != null)
+                    enemy.block.Value = 0;
             }
         }
 

@@ -24,5 +24,10 @@ namespace SlayTheSpireM
             Log.Debug("ApplyBuffEffect Buff", buff);
             target.ApplyBuff(buff);
         }
+
+        public override string ToString()
+        {
+            return Description.Replace("#", buff.ToString());
+        }
     }
 }
