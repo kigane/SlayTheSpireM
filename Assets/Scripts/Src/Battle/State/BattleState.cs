@@ -3,15 +3,15 @@ using QFramework;
 
 namespace SlayTheSpireM
 {
-    public class BattleState
+    public class BattleState : ICanSendCommand
     {
         public virtual void Enter() { }
 
         public virtual void OnUpdate() { }
 
-        // public IArchitecture GetArchitecture()
-        // {
-        //     return SlayTheSpireGame.Interface;
-        // }
+        public IArchitecture GetArchitecture()
+        {
+            return SlayTheSpireGame.Interface;
+        }
     }
 }

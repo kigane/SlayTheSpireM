@@ -20,6 +20,7 @@ namespace SlayTheSpireM
         public const string GameBackgroundPanel = "GameBackground";
         public const string StatusPanel = "StatusPanel";
         public const string BattleWindow = "BattleWindow";
+        public const string BattleWinWindow = "BattleWinWindow";
         public const string GameOverWindow = "GameOverWindow";
     }
 }

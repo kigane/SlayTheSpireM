@@ -30,7 +30,7 @@ namespace SlayTheSpireM
             {
                 // Log.Info(e.GetType().Name);
                 var hc = BattleSession.instance.player.handCards;
-                Log.Debug("当前手牌", hc);
+                // Log.Debug("当前手牌", hc);
                 var deck = BattleSession.instance.deck;
 
                 // 显示手牌

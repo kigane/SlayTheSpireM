@@ -19,6 +19,7 @@ namespace SlayTheSpireM
         public string Name { get; }
 
         public TextMeshProUGUI Text;
+        public GameObject instance;
 
         public Buff(string name, BuffType type, int val)
         {
@@ -26,6 +27,14 @@ namespace SlayTheSpireM
             Icon = Resources.Load<Sprite>($"Icon/Buff/{name}");
             Type = type;
             Value = val;
+        }
+
+        public void Update()
+        {
+            if (Type == BuffType.LastTurns)
+            {
+                Value -= 1;
+            }
         }
 
         public static Buff operator +(Buff a, Buff b)

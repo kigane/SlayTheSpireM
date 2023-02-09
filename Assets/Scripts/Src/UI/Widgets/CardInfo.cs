@@ -20,7 +20,7 @@ namespace SlayTheSpireM
             energy.text = "" + card.energy;
             cardName.text = card.name;
             // TODO 卡面图片位置
-            Log.Debug("CardFace", card.spritePath);
+            // Log.Debug("CardFace", card.spritePath);
             cardFace.sprite = Resources.Load<Sprite>("Icon/Buff/" + card.spritePath);
             cardType.text = "" + card.type;
             cardDesc.text = card.description;

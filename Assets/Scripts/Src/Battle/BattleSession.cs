@@ -80,8 +80,20 @@ namespace SlayTheSpireM
         {
             foreach (var enemy in enemies)
             {
+                if (enemy == null)
+                    continue;
                 enemy.DoAction();
             }
+        }
+
+        public bool AreEnemiesAllNull()
+        {
+            foreach (var enemy in enemies)
+            {
+                if (enemy != null)
+                    return false;
+            }
+            return true;
         }
 
         public void ChangeState(BattleStateType type)
@@ -107,6 +119,8 @@ namespace SlayTheSpireM
         {
             foreach (var enemy in enemies)
             {
+                if (enemy == null)
+                    continue;
                 enemy.GenerateRandomIntention();
             }
             this.SendCommand<StartPlayerTurnCommand>();
@@ -115,7 +129,6 @@ namespace SlayTheSpireM
         public void EndPlayerTurn()
         {
             this.SendCommand<EndPlayerTurnCommand>();
-            StartCoroutine(nameof(EndEnemyTurn));
         }
 
         public void EndEnemyTurn()

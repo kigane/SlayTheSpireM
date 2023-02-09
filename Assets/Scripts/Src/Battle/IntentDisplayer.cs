@@ -12,7 +12,7 @@ namespace SlayTheSpireM
 
         public void SetData(Card card)
         {
-            Log.Debug(card);
+            // Log.Debug(card);
             icon.sprite = Resources.Load<Sprite>("Icon/Intent/" + card.spritePath);
             value.text = card.effect.Value.ToString();
         }

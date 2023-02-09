@@ -1,12 +1,13 @@
 ﻿using System.Data;
 using Mono.Data.Sqlite;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace SlayTheSpireM
 {
     public class SqliteManager
     {
-        static readonly string ConnectionString = "Data Source=Assets/DB/SlayTheSpire.db";
+        static readonly string ConnectionString = $"Data Source={Application.dataPath}/DB/SlayTheSpire.db";
 
         public static List<CardConfig> QueryCardConfigByRole(int roleType, bool needAll = true)
         {

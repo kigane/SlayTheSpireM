@@ -14,12 +14,6 @@ namespace SlayTheSpireM
         [SerializeField] Slider healthBarSlider;
         [SerializeField] Transform buffsTransform;
 
-        private void Awake()
-        {
-            //TODO
-            return;
-        }
-
         protected void SetHealthSlider(float val)
         {
             healthBarSlider.value = val;
@@ -45,6 +39,7 @@ namespace SlayTheSpireM
 
             GameObject buffPrototype = Resources.Load<GameObject>("Prefabs/Buff"); // 原型
             GameObject buffInstance = Instantiate(buffPrototype, buffsTransform); // 实例
+            buff.instance = buffInstance;
             buffInstance.name = buff.Name;
             buffInstance.GetComponent<Image>().sprite = buff.Icon;
             buff.Text = buffInstance.GetComponentInChildren<TextMeshProUGUI>();

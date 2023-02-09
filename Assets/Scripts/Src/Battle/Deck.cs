@@ -34,10 +34,10 @@ namespace SlayTheSpireM
             // var roleCardConfigs = cardConfigModel.GetCardsByRole(role);
             // var allRoleCardConfigs = cardConfigModel.GetCardsByRole(RoleType.all);
             var roleCardConfigs = SqliteManager.QueryCardConfigByRole((int)role);
-            Log.Debug(roleCardConfigs);
+            // Log.Debug(roleCardConfigs);
             foreach (var cardConfig in roleCardConfigs)
             {
-                Log.Debug(cardConfig.Id);
+                // Log.Debug(cardConfig.Id);
                 DeckCardsCache[cardConfig.Id] = CardFactory.CreateCard(cardConfig);
             }
             // foreach (var cardConfig in allRoleCardConfigs)
@@ -45,7 +45,6 @@ namespace SlayTheSpireM
             //     DeckCardsCache[cardConfig.Id] = CardFactory.CreateCard(cardConfig);
             // }
             Log.Debug(DeckCardsCache);
-            Log.Debug(DeckCardsCache[0]);
         }
 
         public Card GetCardById(int id)

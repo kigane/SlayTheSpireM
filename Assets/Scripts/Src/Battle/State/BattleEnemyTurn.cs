@@ -12,7 +12,7 @@ namespace SlayTheSpireM
             BattleSession.instance.CleanAllEnemiesBlock();
             Log.Debug("敌方回合!");
             BattleSession.instance.EnemiesDoIntent();
-            BattleSession.instance.EndEnemyTurn(); //不能这样调用
+            BattleSession.instance.EndEnemyTurn();
             // BattleSession.instance.ChangeState(BattleStateType.PlayerTurn);
         }
 

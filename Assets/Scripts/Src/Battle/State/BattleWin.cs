@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using QFramework;
 
 namespace SlayTheSpireM
 {
@@ -7,6 +7,7 @@ namespace SlayTheSpireM
         public override void Enter()
         {
             Log.Debug("战斗胜利!");
+            this.SendCommand(new OpenNewScreenCommand(GameScreenIds.BattleWinWindow));
         }
 
         public override void OnUpdate()

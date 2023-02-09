@@ -30,7 +30,16 @@ namespace SlayTheSpireM
                 if (val <= 0)
                 {
                     BattleSession.instance.enemies[id] = null;
-                    canvasGroup.DOFade(0, 0.3f).OnComplete(() => { enemyImage.raycastTarget = false; });
+
+                    canvasGroup.DOFade(0, 0.3f).OnComplete(() =>
+                    {
+                        enemyImage.raycastTarget = false;
+                        if (BattleSession.instance.AreEnemiesAllNull())
+                        {
+                            // 战斗胜利
+                            BattleSession.instance.ChangeState(BattleStateType.Win);
+                        }
+                    });
                 }
                 SetHealthSlider((float)val / enemy.maxHp.Value);
             }).UnRegisterWhenGameObjectDestroyed(gameObject); ;
@@ -57,6 +66,7 @@ namespace SlayTheSpireM
             {
                 intention.GetComponent<IntentDisplayer>().SetData(enemy.CurrIntent);
                 intention.SetActive(true);
+                UpdateBuffValue();
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
 
             this.RegisterEvent<PlayerTurnEndEvent>(e =>
@@ -86,12 +96,27 @@ namespace SlayTheSpireM
 
         public void ShowIntention()
         {
-            intention.gameObject.SetActive(true);
+            intention.SetActive(true);
         }
 
         public void HideIntention()
         {
-            intention.gameObject.SetActive(false);
+            intention.SetActive(false);
+        }
+
+        public void UpdateBuffValue()
+        {
+            // Log.Debug(nameof(UpdateBuffValue));
+            foreach (var buff in Buffs)
+            {
+                buff.Update();
+                if (buff.Value == 0)
+                {
+                    Destroy(buff.instance);
+                }
+                buff.Text.text = buff.Value.ToString();
+                enemy.RemoveBuff(buff);
+            }
         }
     }
 }
